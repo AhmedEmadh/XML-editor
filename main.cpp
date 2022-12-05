@@ -55,20 +55,8 @@ bool balanced(const std::string& xml)
 
 
 int main() {
-    string s1 = "<book id=\"bk102\">\n"
-                "      <author>Ralls, Kim</author>\n"
-                "      <title>Midnight Rain</title>\n"
-                "      <genre>Fantasy</genre>\n"
-                "      <price>5.95</price>\n"
-                "      <publish_date>2000-12-16</publish_date>\n"
-                "      <description>A former architect battles corporate zombies, \n"
-                "      an evil sorceress, and her own childhood to become queen \n"
-                "      of the world.</description>\n"
-                "   </book>";
-    cout<< balanced(s1);
-    
 
 
-   
-   return 0;
+
+    return 0;
 }
