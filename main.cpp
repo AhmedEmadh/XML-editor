@@ -74,8 +74,59 @@ class XmlReadFile{
         }
         
     }
-    bool is_valid(){
-        return true;
+    //added is_tags_balwnced private method that check whether the tags are balenced or not
+    bool is_tags_balenced(){
+        
+        if(!this->is_balenced()) return false;
+        stack<string> stk;
+        string tag;
+        //int end;
+        for(int i=0;i<content.size();i++){
+            
+            //case 1
+            if ((content[i]=='<') && (content[i+1]!='/')&&(content[i+1]!='?'))//case 1: opening tag handling
+            {
+                cout << "opening tag found"<<endl;
+                i++;
+                tag = "";
+                
+                //end = i;
+                while(content[i] == ' ') i++;
+                while((content[i] != ' ')&&(content[i] != '>')) {tag = tag+content[i];i++;}
+                cout << tag << "  is pushing"<<endl;
+                stk.push(tag);
+                while(content[i] != '>') i++;
+                
+            }//opening tag handled and pushed to stack and exited
+
+            //case 2
+            if((content[i]=='<')&&(content[i+1] == '/')){//case 2: closing tag handling
+                cout << "closing tag found"<<endl;
+                i++;i++;
+                if(stk.empty()){cout<<"closing tag found and stack is empty (failed)"<<endl; return false;}
+                tag = "";
+                while(content[i]==' ')i++;
+                while((content[i]!=' ')&&(content[i] != '>')){tag = tag+content[i];i++;}
+                cout << "comparing tag: "<< tag<<" and stack top: "<<stk.top()<<endl;
+                if (stk.top() == tag){
+                    cout<< "compare is true "<<stk.top()<<" is poping"<<endl;
+                    stk.pop();
+                }else{cout<<"compare is false"<<endl;}
+                while(content[i] != '>') i++;
+                
+                 
+            }
+          
+        }//end for
+        
+        if(stk.empty()){//problem is stack is not empty at the end of a correct file
+            cout<<"stack is empty at the end (succedded)"<<endl;
+            return true;
+        } else {
+            cout <<"stack is not empty at the end (failed)"<<endl;
+            return false;
+            
+        }
     }
     string to_json(){
         return "not now";
@@ -89,7 +140,7 @@ class XmlReadFile{
         return this->content.size();
     }
     bool is_correct(){
-        if((this->is_balenced()) && (this->is_valid())){
+        if((this->is_balenced())&&(this->is_tags_balenced())){
             return true;
         } else {
             return false;
