@@ -1,41 +1,87 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package DS;
-import java.io.*;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File; 
+import javax.xml.parsers.DocumentBuilderFactory;  
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document; 
+import org.w3c.dom.NodeList;  
+import org.w3c.dom.Node;  
+import org.w3c.dom.Element;  
+import org.w3c.dom.NamedNodeMap;
+import java.util.*;
+
 
 /**
  *
  * @author Mohamed Hassan
  */
-public class ReadText {
+public class ReadXMLFile {
     
-    public static String Readtext() {
+    // C:\Users\moham\OneDrive\Desktop\Documents\NetBeansProjects\My_Project
+    //D:\\
     
-      
-            try {
-                // Creating a path choosing file from local
-                // directory by creating an object of Path class
-                Path fileName = Path.of("D:\\XMLFile.xml");
-                
-                // Now calling Files.readString() method to
-                // read the file
-                 String str = Files.readString(fileName);
-                
-                // Printing the string
-                System.out.println(str);
-                
-                
-            } catch (IOException ex) {
-                Logger.getLogger(ReadText.class.getName()).log(Level.SEVERE, null, ex);
-            }
-               return "" ;
-                
-    }
-    
+  
+     public static void printNodeList(NodeList nodeList)  
+     { 
+           
+            for (int count = 0; count < nodeList.getLength(); count++)   
+     {  
+             Node elemNode = nodeList.item(count);  
+             if (elemNode.getNodeType() == Node.ELEMENT_NODE)   
+            {  
+               // get node name and value  
+             System.out.println("\nNode Name =" + elemNode.getNodeName()+ " [OPEN]");  
+             System.out.println("Node Content =" + elemNode.getTextContent());  
+          if (elemNode.hasAttributes())   
+          {  
+            NamedNodeMap nodeMap = elemNode.getAttributes();  
+             for (int i = 0; i < nodeMap.getLength(); i++)   
+             {  
+              Node node = nodeMap.item(i);  
+             System.out.println(" name : " + node.getNodeName());  
+             System.out.println(" value : " + node.getNodeValue());  
+             }  
+             }  
+              if (elemNode.hasChildNodes())   
+              {  
+//recursive call if the node has child nodes  
+                printNodeList(elemNode.getChildNodes());  
+               }  
+           System.out.println("Node Name =" + elemNode.getNodeName()+ " [CLOSE]");  
+           }  
+}  
+}  
+     
+     public static void main(String arg[]){
+     
+         // ReadText.Readtext();
    
-              
+         // XML_to_JSON.Convert();
+     
+         try   
+          {  
+              System.out.println("Enter file path");
+              Scanner input = new Scanner ( System.in );
+               String filepath = input.next();
+       File file = new File(filepath);  
+       DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();  
+       Document document = documentBuilder.parse(file);  
+       System.out.println("Root element: "+ document.getDocumentElement().getNodeName());  
+    if (document.hasChildNodes())   
+    {  
+           printNodeList(document.getChildNodes());  
+    }  
+        }   
+   catch (Exception e)  
+   {  
+              System.out.println(e.getMessage());  
+   }
+     
+     
+     }
+    
     
 }
