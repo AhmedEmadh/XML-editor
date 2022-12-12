@@ -22,7 +22,10 @@ public class ReadText {
             try {
                 // Creating a path choosing file from local
                 // directory by creating an object of Path class
-                Path fileName = Path.of("D:\\XMLFile.xml");
+                System.out.println("Enter file path");
+              Scanner input = new Scanner ( System.in );
+               String filepath = input.next();
+                Path fileName = Path.of(filepath);
                 
                 // Now calling Files.readString() method to
                 // read the file
