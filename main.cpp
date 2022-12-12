@@ -146,6 +146,18 @@ class XmlReadFile{
             return false;
         }
     }
+    string minify(string xml)
+    {
+        for (int i = 0; i < xml.length(); i++)
+        {
+            if ((xml[i] == ' ') || xml[i] == '\n')
+            {
+                xml.erase(xml.begin() + i);
+                i--;
+            }
+        }
+        return xml;
+    }
 };
 
 
