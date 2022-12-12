@@ -57,9 +57,9 @@ public class ReadXMLFile {
      
      public static void main(String arg[]){
      
-         // ReadText.Readtext();
+        // System.out.println(ReadText.Readtext());
    
-         // XML_to_JSON.Convert();
+        //XML_to_JSON.Convert();
      
          try   
           {  
