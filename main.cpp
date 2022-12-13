@@ -150,7 +150,7 @@ class XmlReadFile{
     {
         for (int i = 0; i < xml.length(); i++)
         {
-            if ((xml[i] == ' ') || xml[i] == '\n')
+            if ((xml[i] == ' ') || (xml[i] == '\n') || (xml[i] == '\t'))
             {
                 xml.erase(xml.begin() + i);
                 i--;
