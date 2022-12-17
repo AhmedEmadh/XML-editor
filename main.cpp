@@ -116,15 +116,15 @@ class XmlReadFile{
                 /*last_opening=i;*/
                 stk_last_opening.push(i);
 
-                cout << "opening tag found"<<endl;
+                //cout << "opening tag found"<<endl;
                 i++;
                 tag = "";
                 
                 //end = i;
                 while(content[i] == ' ') i++;
                 while((content[i] != ' ')&&(content[i] != '>')) {tag = tag+content[i];i++;}
-                /**/cout<<tag<<" opening is at "<</*last_opening*/stk_last_opening.top()<<endl;
-                cout << tag << "  is pushing"<<endl;
+                /**///cout<<tag<<" opening is at "<</*last_opening*/stk_last_opening.top()<<endl;
+                //cout << tag << "  is pushing"<<endl;
                 stk.push(tag);
                 while(content[i] != '>') i++;
                 
@@ -133,30 +133,30 @@ class XmlReadFile{
             //case 2
             if((content[i]=='<')&&(content[i+1] == '/')){//case 2: closing tag handling
                 last_closing = i;
-                cout << "closing tag found"<<endl;
+                //cout << "closing tag found"<<endl;
                 i++;i++;
                 /*last if stk empty before cutting*/
                 tag = "";
                 while(content[i]==' ')i++;
                 while((content[i]!=' ')&&(content[i] != '>')){tag = tag+content[i];i++;}
                 if(stk.empty()){error_index=last_closing;cout<<"closing tag found "<< tag <<" and stack is empty (failed) and error is at:"<<error_index<<endl;return false;}
-                cout << "comparing tag: "<< tag<<" and stack top: "<<stk.top()<<endl;
-                /**/cout<<tag<<" closing is at "<<last_closing<<endl;
+                //cout << "comparing tag: "<< tag<<" and stack top: "<<stk.top()<<endl;
+                /**///cout<<tag<<" closing is at "<<last_closing<<endl;
                 if (stk.top() == tag){
-                    cout<< "compare is true "<<stk.top()<<" is poping"<<endl;
+                    //cout<< "compare is true "<<stk.top()<<" is poping"<<endl;
                     stk.pop();
                     stk_last_opening.pop();
                 }else{//closing with no near opening
                     
-                    cout <<"compare is false (error)"<<endl;
+                    //cout <<"compare is false (error)"<<endl;
                     //error_index=last_closing;
                     if(is_stack_contains(stk,tag)){
                         error_index = /*last_opening*/stk_last_opening.top();
-                        cout <<"compare is false (error) and the error at last opening "<< error_index <<endl;
+                        //cout <<"compare is false (error) and the error at last opening "<< error_index <<endl;
                         return false;
                     }else{
                         error_index = last_closing;
-                        cout <<"compare is false (error) and the error at last closing: "<< error_index <<endl;
+                        //cout <<"compare is false (error) and the error at last closing: "<< error_index <<endl;
                         return false;
                     }
                 }
@@ -168,11 +168,11 @@ class XmlReadFile{
         }//end for
         
         if(stk.empty()){//problem is stack is not empty at the end of a correct file
-            cout<<"stack is empty at the end (succedded)"<<endl;
+            //cout<<"stack is empty at the end (succedded)"<<endl;
             return true;
         } else {
             error_index = /*last_opening*/stk_last_opening.top();
-            cout <<"stack is not empty at the end (failed) and error is at: "<< error_index <<endl;
+            //cout <<"stack is not empty at the end (failed) and error is at: "<< error_index <<endl;
             
             return false;
             
@@ -188,7 +188,7 @@ class XmlReadFile{
                 end++;
             }
             end++;
-            cout<<"error between "<<error_index<<" and "<<end<<endl;
+            //cout<<"error between "<<error_index<<" and "<<end<<endl;
             length = end-error_index;
              content.erase(error_index,length);
         }
@@ -238,9 +238,9 @@ class XmlReadFile{
 
         string pathfile;
         std::string names[100];  // Array of words between <  > 
-        cout << "Enter the XML path file to format \n";
-        cin >> pathfile;
-        std::string content = readFileIntoString(pathfile);
+        //cout << "Enter the XML path file to format \n";
+        //cin >> pathfile;
+        //std::string content = readFileIntoString(pathfile);
 
         int index = 0;
         int nameslength = 0;
@@ -281,6 +281,9 @@ class XmlReadFile{
 
 int main() {
     cout << "hello"<<endl;
-
+    XmlReadFile file("books.xml");
+    file.correct();
+    file.Format();
+    cout<<file.get_content();
     return 0;
 }
