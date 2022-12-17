@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 /*
 XMLReadFile is written by Ahmed Emad
 please read carfully to understand the operation of the class:
@@ -34,6 +35,7 @@ the program prints 0: if the file is not balenced
 class XmlReadFile{
  private:
     string content;
+    int error_index;
     string readFileIntoString(const string& path) {
     ifstream input_file(path);
     if (!input_file.is_open()) {
@@ -43,8 +45,39 @@ class XmlReadFile{
     }
     return string((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
     }
+    string readFileIntoString(string& path) {
+    ifstream input_file(path);
+    if (!input_file.is_open()) {
+        cerr << "Could not open the file - '"
+             << path << "'" << endl;
+        exit(EXIT_FAILURE);
+    }
+    return string((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
+    }
+    bool is_stack_contains(stack<string> strStk,string word){
+        
+        cout<<"searching for "<<word<<" in stack"<<endl;
+        while(!strStk.empty()){
+            cout<<"comparing "<<strStk.top()<<" with "<<word<<endl;
+            if(strStk.top() == word){
+                cout<<"comparing is true"<<endl;
+                return true;
+            }else{
+                cout<<"comparing is false poping"<<endl;
+                strStk.pop();
+                }
+        }
+        return false;
+    }
     
-    bool is_balenced(){
+    //added is_tags_balwnced private method that check whether the tags are balenced or not
+
+     
+    string to_json(){
+        return "not now";
+    }
+ public:
+ bool is_balenced(){
         stack<char> stk;
         for(int i=0;i<content.length();i++){
             if(content[i] == '<'){
@@ -64,8 +97,12 @@ class XmlReadFile{
         }
         
     }
-    //added is_tags_balwnced private method that check whether the tags are balenced or not
-    bool is_tags_balenced(){
+ bool is_tags_balenced(){
+        int last_opening;
+        int last_closing;
+
+        stack<int> stk_last_opening;
+        stack<int> stk_last_closing;
         
         if(!this->is_balenced()) return false;
         stack<string> stk;
@@ -76,6 +113,9 @@ class XmlReadFile{
             //case 1
             if ((content[i]=='<') && (content[i+1]!='/')&&(content[i+1]!='?'))//case 1: opening tag handling
             {
+                /*last_opening=i;*/
+                stk_last_opening.push(i);
+
                 cout << "opening tag found"<<endl;
                 i++;
                 tag = "";
@@ -83,6 +123,7 @@ class XmlReadFile{
                 //end = i;
                 while(content[i] == ' ') i++;
                 while((content[i] != ' ')&&(content[i] != '>')) {tag = tag+content[i];i++;}
+                /**/cout<<tag<<" opening is at "<</*last_opening*/stk_last_opening.top()<<endl;
                 cout << tag << "  is pushing"<<endl;
                 stk.push(tag);
                 while(content[i] != '>') i++;
@@ -91,20 +132,37 @@ class XmlReadFile{
 
             //case 2
             if((content[i]=='<')&&(content[i+1] == '/')){//case 2: closing tag handling
+                last_closing = i;
                 cout << "closing tag found"<<endl;
                 i++;i++;
-                if(stk.empty()){cout<<"closing tag found and stack is empty (failed)"<<endl; return false;}
+                /*last if stk empty before cutting*/
                 tag = "";
                 while(content[i]==' ')i++;
                 while((content[i]!=' ')&&(content[i] != '>')){tag = tag+content[i];i++;}
+                if(stk.empty()){error_index=last_closing;cout<<"closing tag found "<< tag <<" and stack is empty (failed) and error is at:"<<error_index<<endl;return false;}
                 cout << "comparing tag: "<< tag<<" and stack top: "<<stk.top()<<endl;
+                /**/cout<<tag<<" closing is at "<<last_closing<<endl;
                 if (stk.top() == tag){
                     cout<< "compare is true "<<stk.top()<<" is poping"<<endl;
                     stk.pop();
-                }else{cout<<"compare is false"<<endl;}
+                    stk_last_opening.pop();
+                }else{//closing with no near opening
+                    
+                    cout <<"compare is false (error)"<<endl;
+                    //error_index=last_closing;
+                    if(is_stack_contains(stk,tag)){
+                        error_index = /*last_opening*/stk_last_opening.top();
+                        cout <<"compare is false (error) and the error at last opening "<< error_index <<endl;
+                        return false;
+                    }else{
+                        error_index = last_closing;
+                        cout <<"compare is false (error) and the error at last closing: "<< error_index <<endl;
+                        return false;
+                    }
+                }
                 while(content[i] != '>') i++;
                 
-                 
+                
             }
           
         }//end for
@@ -113,15 +171,29 @@ class XmlReadFile{
             cout<<"stack is empty at the end (succedded)"<<endl;
             return true;
         } else {
-            cout <<"stack is not empty at the end (failed)"<<endl;
+            error_index = /*last_opening*/stk_last_opening.top();
+            cout <<"stack is not empty at the end (failed) and error is at: "<< error_index <<endl;
+            
             return false;
             
         }
     }
-    string to_json(){
-        return "not now";
-    }
- public:
+    void correct(){
+        int end;
+        int length=0;
+        //if(!is_tags_balenced()){
+        while(!is_tags_balenced()){
+            end=error_index;
+            while(content[end] != '>'){
+                end++;
+            }
+            end++;
+            cout<<"error between "<<error_index<<" and "<<end<<endl;
+            length = end-error_index;
+             content.erase(error_index,length);
+        }
+    //}
+	}
     XmlReadFile() {
         this->content = "";
     }
@@ -206,8 +278,6 @@ class XmlReadFile{
         cout << c;
     }
 };
-
- 
 
 int main() {
     cout << "hello"<<endl;
