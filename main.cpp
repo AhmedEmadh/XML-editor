@@ -203,7 +203,48 @@ bool balanced(const std::string& xml)
     // all tags must have been closed
     return tags.empty();
 }
+ void Format() {
+        
+        string pathfile ;
+        std::string names[100] ;  // Array of words between <  > 
+        cout << "Enter the XML path file to format \n" ;
+        cin >> pathfile ;
+        std::string content = readFileIntoString( pathfile );
 
+        int index = 0;
+        int nameslength =0 ;  
+        // Store the words between < > in Array
+        for ( int i=0 ; i<content.length() ; i++  ) {
+            
+            if ( content[i] == '<' && content[i+1] != '/' )  {
+                 int sub = i ;
+                 while( content[i] != '>'  ) { i++ ; }
+                 for( int z = sub+1 ; z<=i-1 ; z++ ) {
+                      
+                     names[index]+=content[z]; }
+                     index++ ; nameslength ++ ; 
+            }      
+        } 
+              std::string c = content ;
+              int r = 3 ;       // Identaion
+              for ( int i=1 ; i<nameslength ;i++ ) {     // Insert spaces before < 
+                 int index2 = 1; 
+                 while ((index2 = c.find(names[i], index2)) != string::npos ) {
+
+                     c.insert( index2-1 , r , ' ')  ;   index2+=r ; 
+                     index2 += names[i].length();  
+                 }
+              }
+              for( int j=0 ; j<c.length() ; j++ ) {      // Make < before / exatlly 
+
+                if( c[j] == '<' && c[j+1] == ' '){
+                     int e = j ;
+                    while( c[e+1] != '/' ) e++ ;
+                    swap( c[j] , c[e] );
+                }
+              } 
+                        cout << c ;             
+    }
 
 int main() {
 
