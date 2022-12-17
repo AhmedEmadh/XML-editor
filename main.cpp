@@ -134,8 +134,9 @@ class XmlReadFile{
         return this->content;
     }
 
-    string set_content(const string& data) {
+    void set_content(const string& data) {
         this->content = data;
+        
     }
     
     int sizeOfContent(){
