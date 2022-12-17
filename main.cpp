@@ -1,21 +1,13 @@
 #include <iostream>
-#include "stdafx.h"
-//#using <mscorlib.dll>
 #include <tchar.h>
-#include "rapidxml.hpp"
-#include "rapidxml_iterators.hpp"
-#include "rapidxml_print.hpp"
-#include "rapidxml_utils.hpp"
 #include <string>
 #include <stack>
-
 //Ahmed Emad's includes
 #include <fstream>
 #include <sstream>
 #include <string>
 
 using namespace std;
-//using namespace System::Xml;
 
 /*
 XMLReadFile is written by Ahmed Emad
