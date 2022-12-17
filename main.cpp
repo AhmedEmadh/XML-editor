@@ -43,9 +43,7 @@ class XmlReadFile{
     }
     return string((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
     }
-    string get_content(){
-        return this->content;
-    }
+    
     bool is_balenced(){
         stack<char> stk;
         for(int i=0;i<content.length();i++){
@@ -124,13 +122,26 @@ class XmlReadFile{
         return "not now";
     }
  public:
+    XmlReadFile() {
+        this->content = "";
+    }
+
     XmlReadFile (const string& path){
         content = this->readFileIntoString(path);
+    }
+
+    string get_content() {
+        return this->content;
+    }
+
+    string set_content(const string& data) {
+        this->content = data;
     }
     
     int sizeOfContent(){
         return this->content.size();
     }
+
     bool is_correct(){
         if((this->is_balenced())&&(this->is_tags_balenced())){
             return true;
@@ -150,97 +161,55 @@ class XmlReadFile{
         }
         return xml;
     }
-};
+    void Format() {
 
-
-
-
-bool balanced(const std::string& xml)
-{
-    std::stack<std::string> tags;
-
-    auto from = 0u;
-    while (from < xml.length()) {
-        // check for tag
-        const auto tag_open = xml.find('<', from);
-        const auto tag_close = xml.find('>', tag_open);
-
-        // no tag found
-        if (tag_open == std::string::npos)
-            break;
-
-        // incomplete tag
-        if (tag_close == std::string::npos)
-            return false;
-
-        // get tag
-        auto tag = xml.substr(tag_open, tag_close + 1 - tag_open);
-        from = tag_close + 1;
-
-        // if its an opening tag, push the closing one
-        if (tag[1] != '/') {
-            tags.push(tag.insert(1, "/"));
-        }
-            // otherwise (if its a closing tag), check if it was expected
-        else {
-            if (tags.empty())
-                return false;
-            else if (tags.top() == tag)
-                tags.pop();
-            else
-                return false;
-        }
-    }
-
-    // all tags must have been closed
-    return tags.empty();
-}
- void Format() {
-        
-        string pathfile ;
-        std::string names[100] ;  // Array of words between <  > 
-        cout << "Enter the XML path file to format \n" ;
-        cin >> pathfile ;
-        std::string content = readFileIntoString( pathfile );
+        string pathfile;
+        std::string names[100];  // Array of words between <  > 
+        cout << "Enter the XML path file to format \n";
+        cin >> pathfile;
+        std::string content = readFileIntoString(pathfile);
 
         int index = 0;
-        int nameslength =0 ;  
+        int nameslength = 0;
         // Store the words between < > in Array
-        for ( int i=0 ; i<content.length() ; i++  ) {
-            
-            if ( content[i] == '<' && content[i+1] != '/' )  {
-                 int sub = i ;
-                 while( content[i] != '>'  ) { i++ ; }
-                 for( int z = sub+1 ; z<=i-1 ; z++ ) {
-                      
-                     names[index]+=content[z]; }
-                     index++ ; nameslength ++ ; 
-            }      
-        } 
-              std::string c = content ;
-              int r = 3 ;       // Identaion
-              for ( int i=1 ; i<nameslength ;i++ ) {     // Insert spaces before < 
-                 int index2 = 1; 
-                 while ((index2 = c.find(names[i], index2)) != string::npos ) {
+        for (int i = 0; i < content.length(); i++) {
 
-                     c.insert( index2-1 , r , ' ')  ;   index2+=r ; 
-                     index2 += names[i].length();  
-                 }
-              }
-              for( int j=0 ; j<c.length() ; j++ ) {      // Make < before / exatlly 
+            if (content[i] == '<' && content[i + 1] != '/') {
+                int sub = i;
+                while (content[i] != '>') { i++; }
+                for (int z = sub + 1; z <= i - 1; z++) {
 
-                if( c[j] == '<' && c[j+1] == ' '){
-                     int e = j ;
-                    while( c[e+1] != '/' ) e++ ;
-                    swap( c[j] , c[e] );
+                    names[index] += content[z];
                 }
-              } 
-                        cout << c ;             
+                index++; nameslength++;
+            }
+        }
+        std::string c = content;
+        int r = 3;       // Indentation
+        for (int i = 1; i < nameslength; i++) {     // Insert spaces before < 
+            int index2 = 1;
+            while ((index2 = c.find(names[i], index2)) != string::npos) {
+
+                c.insert(index2 - 1, r, ' ');   index2 += r;
+                index2 += names[i].length();
+            }
+        }
+        for (int j = 0; j < c.length(); j++) {      // Make < before / exactly 
+
+            if (c[j] == '<' && c[j + 1] == ' ') {
+                int e = j;
+                while (c[e + 1] != '/') e++;
+                swap(c[j], c[e]);
+            }
+        }
+        cout << c;
     }
+};
+
+ 
 
 int main() {
-
-
+    cout << "hello"<<endl;
 
     return 0;
 }
