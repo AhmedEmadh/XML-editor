@@ -235,47 +235,64 @@ class XmlReadFile{
         return xml;
     }
     void Format() {
-
-        string pathfile;
-        std::string names[100];  // Array of words between <  > 
-        //cout << "Enter the XML path file to format \n";
-        //cin >> pathfile;
-        //std::string content = readFileIntoString(pathfile);
-
+        
+        std::string names[100] ;  // Array of words between <  > 
+        std::string content = readFileIntoString("XML4.xml");
+        
         int index = 0;
-        int nameslength = 0;
+        int nameslength = 0 ;  
         // Store the words between < > in Array
-        for (int i = 0; i < content.length(); i++) {
+        for ( int i=0 ; i<content.length() ; i++  ) {
+            
+            if ( content[i] == '<' && content[i+1] != '/' )  {
+                 int sub = i ;
+                 while( content[i] != '>'  ) { i++ ; }
+                 for( int z = sub+1 ; z<=i ; z++ ) {
+                      
+                     names[index]+=content[z]; }
+                     index++ ; nameslength ++ ; 
+            }   
+        } 
+              std::string c = content ;
+               int r = 4 ; 
+               int index2 = 0 ; 
+                 while ((index2 = c.find(names[1], index2)) != string::npos ) {
+                    
+                     c.insert( index2-1 , 2 , ' ')  ;   index2+= 2 ;  
+                     index2 += names[1].length();  
+                 }
+              for ( int i=2 ; i<nameslength ; i++ ) {     // Find the words between < > and Insert spaces before < 
+                  int index2 = 0 ; 
+                 while ((index2 = c.find(names[i], index2)) != string::npos ) {
+                    
+                     c.insert( index2-1 , r , ' ')  ;   index2+= r ;  
+                     index2 += names[i].length();  
+                 }  
+              }
+              for( int j=0 ; j<c.length() ; j++ ) {      // Make < before / exatlly 
 
-            if (content[i] == '<' && content[i + 1] != '/') {
-                int sub = i;
-                while (content[i] != '>') { i++; }
-                for (int z = sub + 1; z <= i - 1; z++) {
-
-                    names[index] += content[z];
+                if( c[j] == '<' && c[j+1] == ' '){
+                     int e = j ;
+                    while( c[e+1] != '/' ) e++ ;
+                    swap( c[j] , c[e] );
                 }
-                index++; nameslength++;
-            }
-        }
-        std::string c = content;
-        int r = 3;       // Indentation
-        for (int i = 1; i < nameslength; i++) {     // Insert spaces before < 
-            int index2 = 1;
-            while ((index2 = c.find(names[i], index2)) != string::npos) {
+              }
+             int f=0 ;
+            for( int k=0 ; k < c.length() ; k++ ) {      // Remove unwanted spacse
+                        
+                        bool space = false ;
+                 if( c[k] == '<' ) { 
 
-                c.insert(index2 - 1, r, ' ');   index2 += r;
-                index2 += names[i].length();
-            }
-        }
-        for (int j = 0; j < c.length(); j++) {      // Make < before / exactly 
-
-            if (c[j] == '<' && c[j + 1] == ' ') {
-                int e = j;
-                while (c[e + 1] != '/') e++;
-                swap(c[j], c[e]);
-            }
-        }
-        cout << c;
+                       while( c[k+1] != '\n' ) {
+                        if ( c[k+1] == '<' )  { f = k ; space = true ; } 
+                         k++ ; } 
+                         int back = f ;
+                         while ( c[back] == ' ' ) { back -- ; }
+                         if( space ) { c.erase( back+1 , f-back );  }             
+                 }         
+              } 
+                    cout << c ;
+                
     }
 };
 
