@@ -55,22 +55,25 @@ void encode(Node* root, string str, unordered_map<char, string> &huffmanCode)
         huffmanCode[root->ch] = (str != EMPTY_STRING) ? str : "1";
     }
  
+
     encode(root->left, str + "0", huffmanCode);
     encode(root->right, str + "1", huffmanCode);
 }
  
 // Traverse the Huffman Tree and decode the encoded string
+string decoded ;
 void decode(Node* root, int &index, string str)
 {
     if (root == nullptr) {
-        return;
+        return ;
     }
- 
+     
     // found a leaf node
     if (isLeaf(root))
     {
-        cout << root->ch;
-        return;
+          decoded +=  root->ch;
+          return ;
+          
     }
  
     index++;
@@ -84,11 +87,12 @@ void decode(Node* root, int &index, string str)
 }
  
 // Builds Huffman Tree and decodes the given input text
-void buildHuffmanTree(string text)
+string buildHuffmanTree( string text )
 {
+    
     // base case: empty string
     if (text == EMPTY_STRING) {
-        return;
+        return "empty string \n";
     }
  
     // count the frequency of appearance of each character and store it in a map
@@ -130,37 +134,47 @@ void buildHuffmanTree(string text)
     unordered_map<char, string> huffmanCode;
     encode(root, EMPTY_STRING, huffmanCode);
  
-    cout << "Huffman Codes are:\n" << endl;
+   
+    string HuffmanCodes ;
     for (auto pair: huffmanCode) {
-        cout << pair.first << " " << pair.second << endl;
+       
+       HuffmanCodes += pair.first ;
+       HuffmanCodes += " " ;
+       HuffmanCodes +=  pair.second;
+       HuffmanCodes +=  "\n";
     }
- 
-    cout << "\nThe original string is:\n" << text << endl;
- 
+
     // Print encoded string
     string str;
     for (char ch: text) {
         str += huffmanCode[ch];
     }
- 
-    cout << "\nThe encoded string is:\n" << str << endl;
-    cout << "\nThe decoded string is:\n";
- 
+     
     if (isLeaf(root))
     {
         // Special case: For input like a, aa, aaa, etc.
         while (root->freq--) {
-            cout << root->ch;
+            decoded += root->ch;
         }
+
     }
     else {
         // Traverse the Huffman Tree again and this time,
         // decode the encoded string
         int index = -1;
         while (index < (int)str.size() - 1) {
-            decode(root, index, str);
+           decode(root, index, str);
         }
     }
+     
+     /*string final = "Huffman Codes are:\n" + HuffmanCodes + "\nThe original string is:\n" 
+                       + text + "\nThe encoded string is:\n" + str  + "\nThe decoded string is:\n" + 
+                       decodexml ;*/
+            string s="Huffman Codes are:\n";
+        string output =s.append(HuffmanCodes ).append("\nThe original string is:\n").append(text).append( 
+        "\nThe encoded string is:\n").append(str).append("\nThe decoded string is:\n").append(decoded) ;
+        //+ "\nThe encoded string is:\n" + str + "\nThe decoded string is:\n" + decodexml ;
+        return output ;
 }
 
 // Huffman coding algorithm implementation in C++
@@ -168,7 +182,8 @@ int main()
 {
     ifstream input_file("XML2.xml");
     string text = string((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
-    buildHuffmanTree(text);
- 
+string o = buildHuffmanTree(text);
+cout << o;
+    
     return 0;
 }
