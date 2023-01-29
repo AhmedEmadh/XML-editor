@@ -1,4 +1,10 @@
-
+#include <iostream>
+#include <tchar.h>
+#include <string>
+#include <stack>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 
  void Format() {
