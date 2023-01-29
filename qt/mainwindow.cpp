@@ -325,65 +325,76 @@ string MainWindow:: buildHuffmanTree( string text ){
     //+ "\nThe encoded string is:\n" + str + "\nThe decoded string is:\n" + decodexml ;
     return output ;
 }
-
+string readFileIntoString(const string& path) {
+    ifstream input_file(path);
+    if (!input_file.is_open()) {
+        cerr << "Could not open the file - '"
+             << path << "'" << endl;
+        exit(EXIT_FAILURE);
+    }}
 string MainWindow:: Formating(string xml) {
 
         string names[10000] ;  // Array of words between <  >
 
-        string content = xml;
+        string content =xml;
 
         int index = 0;
-        int nameslength = 0 ;
-        // Store the words between < > in Array
-        for ( int i=0 ; i<content.length() ; i++  ) {
+              int nameslength = 0 ;
+              // Store the words between < > in Array
+              for ( int i=0 ; i<content.length() ; i++  ) {
 
-            if ( content[i] == '<' && content[i+1] != '/' )  {
-                 int sub = i ;
-                 while( content[i] != '>'  ) { i++ ; }
-                 for( int z = sub+1 ; z<=i ; z++ ) {
+                  if ( content[i] == '<' && content[i+1] != '/' )  {
+                       int sub = i ;
+                       while( content[i] != '>'  ) { i++ ; }
+                       for( int z = sub+1 ; z<=i ; z++ ) {
 
-                     names[index]+=content[z]; }
-                     index++ ; nameslength ++ ;
-            }
-        }
-              string c = content ;
-               int r = 4 ;
-               int index2 = 0 ;
-                 while ((index2 = c.find(names[1], index2)) != string::npos ) {
-
-                     c.insert( index2-1 , 2 , ' ')  ;   index2+= 2 ;
-                     index2 += names[1].length();
-                 }
-              for ( int i=2 ; i<nameslength ; i++ ) {     // Find the words between < > and Insert spaces before <
-                  int index2 = 0 ;
-                 while ((index2 = c.find(names[i], index2)) != string::npos ) {
-
-                     c.insert( index2-1 , r , ' ')  ;   index2+= r ;
-                     index2 += names[i].length();
-                 }
+                           names[index]+=content[z]; }
+                           index++ ; nameslength ++ ;
+                  }
               }
-              for( int j=0 ; j<c.length() ; j++ ) {      // Make < before / exatlly
+                    string c = content ;
+                     int r = 6 ;
+                     int index2 = 0 ;
+                       while ((index2 = c.find(names[1], index2)) != string::npos ) {
 
-                if( c[j] == '<' && c[j+1] == ' '){
-                     int e = j ;
-                    while( c[e+1] != '/' ) e++ ;
-                    swap( c[j] , c[e] );
-                }
-              }
-             int f=0 ;
-            for( int k=0 ; k < c.length() ; k++ ) {      // Remove unwanted spacse
+                           c.insert( index2-1 , 2 , ' ')  ;   index2+= 2 ;
+                           index2 += names[1].length();
+                       }index2 = 0 ;
+                       while ((index2 = c.find(names[2], index2)) != string::npos ) {
 
-                        bool space = false ;
-                 if( c[k] == '<' ) {
+                           c.insert( index2-1 , 4 , ' ')  ;   index2+= 4;
+                           index2 += names[2].length();
+                       }
+                    for ( int i=3 ; i<nameslength ; i++ ) {     // Find the words between < > and Insert spaces before <
+                        int index2 = 0 ;
+                       while ((index2 = c.find(names[i], index2)) != string::npos ) {
 
-                       while( c[k+1] != '\n' ) {
-                        if ( c[k+1] == '<' )  { f = k ; space = true ; }
-                         k++ ; }
-                         int back = f ;
-                         while ( c[back] == ' ' ) { back -- ; }
-                         if( space ) { c.erase( back+1 , f-back );  }
-                 }
-              }
+                           c.insert( index2-1 , r , ' ')  ;   index2+= r ;
+                           index2 += names[i].length();
+                       }
+                    }
+                    for( int j=0 ; j<c.length() ; j++ ) {      // Make < before / exatlly
+
+                      if( c[j] == '<' && c[j+1] == ' '){
+                           int e = j ;
+                          while( c[e+1] != '/' ) e++ ;
+                          swap( c[j] , c[e] );
+                      }
+                    }
+                   int f=0 ;
+                  for( int k=0 ; k <(c.length()-10); k++ ) {      // Remove unwanted spacse
+
+                                          bool space = false ;
+                                   if( c[k] == '<' ) {
+
+                                         while( c[k+1] != '\n' ) {
+                                          if ( c[k+1] == '<' )  { f = k ; space = true ; }
+                                           k++ ; }
+                                           int back = f ;
+                                           while ( c[back] == ' ' ) { back -- ; }
+                                           if( space ) { c.erase( back+1 , f-back );  }
+                                   }
+                                }
 
            return c;
     }
