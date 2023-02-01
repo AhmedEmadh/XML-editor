@@ -17,3 +17,19 @@ In this project, you will learn how to understand and parse XML and json files. 
 will work on designing a GUI (Graphical User Interface) to visualize XML and json files. You
 should also work on designing the program such that it makes use of optimal data structures
 for the implemented features.
+
+## Requirements
+
+- Building a GUI in which the user can specify the location of an input XML file.
+
+- Checking the XML consistency: The input XML may have inconsistencies like missing any
+of the closing and opening tags or not matching tags.The program should be able to detect
+and visually show any errors in consistency. Optimally, the program will also be able to
+automatically solve the errors.
+- Formatting (Prettifying) the XML: the XML file should be well formatted by keeping the indentation for each level.
+- Converting XML to JSON: JSON (Javascript Object Notation) is another format that is used to represent data. It’s helpful to convert the XML into JSON, especially when using javascript as there’s tons of libraries and tools that use json notation.
+- Minifying the XML file: Since spaces and newlines (\n) are actually characters that can increase the size of an XML document. This feature should aim at decreasing the size of an XML file (compressing it) by deleting the whitespaces and indentations.
+- Compressing the data in the XML/JSON file: You should come-up with a way to reduce the size of the file using a data compression technique. You can invent your own ad-hoc method for such compression. On the other hand, you can check how JSONH works and try to distill ideas from it. Finally, you can use a data compression technique such as byte pair encoding (https://en.wikipedia.org/wiki/Byte_pair_encoding). The smaller the output file is, the more efficient your algorithm is.
+- Representing the users data using the graph data structure: the XML file will represent the users data in a social network (their posts, followers, ...etc). The user data is his id (unique across the network), name, list of his posts and followers. So you should represent the relation between the followers using the graph data structure as it will be very helpful for the network analysis. If the input file was like this (the dots mean that there are additional tags inside the user tag) : Then you should build a graph relation between the user that looks like the graph beneath.
+- Network analysis: by representing the network using the graph data structure, we can extract some important data: <br>
+&emsp;  who is the most influencer user (has the most followers)
