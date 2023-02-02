@@ -32,4 +32,14 @@ automatically solve the errors.
 - Compressing the data in the XML/JSON file: You should come-up with a way to reduce the size of the file using a data compression technique. You can invent your own ad-hoc method for such compression. On the other hand, you can check how JSONH works and try to distill ideas from it. Finally, you can use a data compression technique such as byte pair encoding (https://en.wikipedia.org/wiki/Byte_pair_encoding). The smaller the output file is, the more efficient your algorithm is.
 - Representing the users data using the graph data structure: the XML file will represent the users data in a social network (their posts, followers, ...etc). The user data is his id (unique across the network), name, list of his posts and followers. So you should represent the relation between the followers using the graph data structure as it will be very helpful for the network analysis. If the input file was like this (the dots mean that there are additional tags inside the user tag) : Then you should build a graph relation between the user that looks like the graph beneath.
 - Network analysis: by representing the network using the graph data structure, we can extract some important data: <br>
-&emsp;  who is the most influencer user (has the most followers)
+&emsp;  - who is the most influencer user (has the most followers) <br>
+&emsp;  - who is the most active user (connected to lots of users) <br>
+&emsp;  - the mutual followers between 2 users <br>
+&emsp;  - for each user, suggest a list of users to follow (the followers of his followers) <br>
+
+- Post search: given a specific word or topic, get the posts where this word or topic was mentioned.
+
+## Bonus Requirements
+- Graph visualization: you’re free to use any tool or 3rd party library to help you visualize the graph of the network showing how the user is connected to each other.<br>
+
+- Additional operations: you’re free to implement additional operations to help you analyze the network better.
