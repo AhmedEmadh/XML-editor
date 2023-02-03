@@ -275,7 +275,7 @@ string PostSearch ( string word )  {
 
                         if ( xmlfile.substr( k , word.length() ) == word ) {
                         found = true ;
-                        output += "The word is found in the posts whose name is " 
+                        output += "The word is found in the posts whose user name is " 
                                      + name + "\n" + "The posts are : \n" + posts ;
                        }
                     }
