@@ -67,12 +67,15 @@ you should install GraphViz before using Graph visualization feature you can ins
 <br>
 Notes::: 
 ==========================================================
+
 The Network analysis exist in RepresentData method.
 We use Hashmap in Network analysis.
 We cannot operate Validation and correction on gui so we make video for it on ide.
 The Network Analysis is at the end of gui phase 2 video.
+
 ===========================================================
 # Team Members 
+
 - Mohamed Atef Hassan	 (1901326)
 
 - Ahmed Emad Hassan Shafik	(1900441)
