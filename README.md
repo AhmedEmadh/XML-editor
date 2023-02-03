@@ -53,7 +53,12 @@ automatically solve the errors.
 
 # Project Implementation
 ## How We Built It
-- GUI: 
+- GUI: We used QT5 framework and implement almost all the functions inside
+- Compression: We used Hoffman coding to compress the xml file
+- Network analysis: We use Hashmap in Network analysis.
+- We used graph data structure to represent the relation between the followers as it will be very helpful for the network analysis.
+- Graph Visualization: We built the appropriate dot file for the connections in the samle xml file, also we implemented a function to create a dot file based on the input xml file.
+
 
 ## Technologies
 - C++ with QT5 framework
@@ -65,15 +70,7 @@ you should install GraphViz before using Graph visualization feature you can ins
 
 <br>
 <br>
-Notes::: 
-==========================================================
 
-The Network analysis exist in RepresentData method.
-We use Hashmap in Network analysis.
-We cannot operate Validation and correction on gui so we make video for it on ide.
-The Network Analysis is at the end of gui phase 2 video.
-
-===========================================================
 # Team Members 
 
 - Mohamed Atef Hassan	 (1901326)
