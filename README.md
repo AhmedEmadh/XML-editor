@@ -44,3 +44,38 @@ automatically solve the errors.
 - Graph visualization: you’re free to use any tool or 3rd party library to help you visualize the graph of the network showing how the user is connected to each other.<br>
 
 - Additional operations: you’re free to implement additional operations to help you analyze the network better.
+
+
+
+<br>
+<br>
+
+
+# Project Implementation
+## How We Built It
+- GUI: 
+
+## Technologies
+- C++ with QT5 framework
+- GraphViz
+
+## Installiation
+you should install GraphViz before using Graph visualization feature you can install GraphViz from: http://graphviz.org/download/
+
+
+<br>
+<br>
+
+# Team Members 
+- Mohamed Atef Hassan	 (1901326)
+
+- Ahmed Emad Hassan Shafik	(1900441)
+
+- Yousef Amer Awadallah Osman	(1901524)
+
+- Karim Mohamed Mohamed Hemidah Aql	(1900511)
+
+- Kareem Ayman Abdelaleem ahmed	(1901763)
+
+
+
