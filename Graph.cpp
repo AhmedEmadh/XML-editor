@@ -1,9 +1,16 @@
 #include <iostream>
 #include <map>
-#include<fstream>
-#include<cstdlib>
+#include <fstream>
+#include <istream>
+#include <cstdlib>
 #include <bits/stdc++.h>
-#include<list>
+#include <list>
+#include <string>
+#include <algorithm>
+#include <functional>
+#include <queue>
+#include <vector>
+#include <stdio.h>
 using namespace std;
 
 class Graph { 
@@ -13,7 +20,8 @@ private:
         int nodes;
         list<int> *adjlist;
 public:
-     
+     int vertArr[20][20]; //the adjacency matrix initially 0
+     int count = 0;
     Graph() {
         }
 
@@ -36,7 +44,7 @@ public:
         void Iterate (int src) {
             cout <<  src << " : ";
             for (auto& adj_node : adjlist[src]) {
-                 cout << adj_node << " ";
+                 cout << adj_node << " --> ";
             } cout << endl;
         }
     
@@ -54,7 +62,7 @@ void printlist() {
     g.AddEdge(4,6);
     g.AddEdge(5,6);
 
-    cout << "Adjacency list implementation for graph" << endl;
+    cout << "Adjacency list of id : \n" << endl;
 
     g.Iterate(0);
     g.Iterate(1);
@@ -63,6 +71,20 @@ void printlist() {
     g.Iterate(3);
     g.Iterate(5);
     g.Iterate(6);
+}
+void displayMatrix(int v) {
+   int i, j;
+   for(i = 1 ; i <= v; i++) {
+      for(j = 1 ; j <= v; j++) {
+         cout << vertArr[i][j] << "  ";
+      }
+      cout << endl;
+   }
+}
+
+void add_edge(int u, int v) {       //function to add edge into the matrix
+   vertArr[u][v] = 1;
+   vertArr[v][u] = 1;
 }
 
 string RepresentData( ) {
@@ -74,7 +96,8 @@ string RepresentData( ) {
        string users[100] ;
     int vertices = 0 ;
     string userdata  ;
-    string AdjacentList = "";
+    string AdjacentList = "Adjacent List of id : \n";
+    Graph M; 
         
        for ( int i=0 ; i < xmlfile.length() ; i++ ){
 
@@ -145,10 +168,13 @@ string RepresentData( ) {
                  }
                  i++ ;
              }
+                AdjacentList += to_string(userid) + " : " ;
                 if ( no_follow >= max ){ max = no_follow ;  mostactive = to_string (userid) ; }
              
                 for ( int k=1 ; k <= no_follow ; k++ ) {
                     
+                    AdjacentList += to_string( follow[k] ) + " -- > " ;
+                    M.add_edge( userid , follow[k] );
                     auto it = mapp.find(follow[k]);  
                     if ( it == mapp.end() ) { 
                         mapp[follow[k]]=name;
@@ -159,11 +185,12 @@ string RepresentData( ) {
                  }
                         
                  i+=7 ; 
-                         
+                           AdjacentList += "\n" ;
              }
+               
              
 
-       }  
+       }
                 string Mutual = "" ;
                 map<int, string>::iterator itt;
 
@@ -204,7 +231,7 @@ string RepresentData( ) {
              
                  return   "Mutual Friends are : "+ Mutual + "The most active user its id = " + mostactive + "\n" +
                              "The most influencer user its id = "+ to_string( maxfreqelement ) +
-                             "\n" + userdata ;
+                             "\n" + AdjacentList + userdata ;
        
 }
 
@@ -267,19 +294,10 @@ string PostSearch ( string word )  {
 int main(  ){
 
     Graph g ;
-   // g.printlist();
+    //g.printlist();
     cout << g.RepresentData();
   
     // cout << g.PostSearch( "yarab" ); 
   
     
 }
-
- 
- 
-
-   
-
-
-
-
