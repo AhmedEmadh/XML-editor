@@ -31,8 +31,10 @@ private slots:
     void on_actionNew_triggered();
 
         void on_actionOpen_triggered();
+        std::string  Formatter(std::string XMLStr,int level);
 
 
+       std:: string  PostSearch ( std::string word );
 
 
         void on_actionExit_triggered();
@@ -65,6 +67,11 @@ private slots:
         void on_actionXMLtoJSON_triggered();
 
         void on_actionMinify_triggered();
+
+        void on_actionpost_search_triggered();
+        std::string  RepresentData(std::string xml );
+
+        void on_actionRepresentdata_triggered();
 
 private:
     Ui::MainWindow *ui;

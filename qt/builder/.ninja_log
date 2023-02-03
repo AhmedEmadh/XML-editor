@@ -1,0 +1,24 @@
+# ninja log v5
+45	388	6971296026445466	C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/timestamp	846a3a83ea3e885e
+45	388	6971296026445466	test2_autogen/timestamp	846a3a83ea3e885e
+553	3664	6971182871113618	CMakeFiles/test2.dir/main.cpp.obj	77de68a49a37aaf5
+45	388	6971296026445466	test2_autogen/mocs_compilation.cpp	846a3a83ea3e885e
+45	388	6971296026445466	C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/mocs_compilation.cpp	846a3a83ea3e885e
+548	3670	6971182871163653	CMakeFiles/test2.dir/test2_autogen/mocs_compilation.cpp.obj	b46361340edabc7
+5107	5473	6971296076361824	test2.exe	543d0637e58f04bf
+405	5106	6971296073537785	CMakeFiles/test2.dir/mainwindow.cpp.obj	77366fd2a3d59d08
+365	437	6929009360402388	test2_autogen/EWIEGA46WW/qrc_resource.cpp	49579d26ec11e362
+365	437	6929009360402388	C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/EWIEGA46WW/qrc_resource.cpp	49579d26ec11e362
+442	1017	6929009366221005	CMakeFiles/test2.dir/test2_autogen/EWIEGA46WW/qrc_resource.cpp.obj	f2cd7d088dacb1bd
+49	376	6971297112893438	test2_autogen/timestamp	846a3a83ea3e885e
+49	376	6971297112893438	test2_autogen/mocs_compilation.cpp	846a3a83ea3e885e
+49	376	6971297112893438	C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/timestamp	846a3a83ea3e885e
+49	376	6971297112893438	C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/mocs_compilation.cpp	846a3a83ea3e885e
+391	5005	6971297159121150	CMakeFiles/test2.dir/mainwindow.cpp.obj	77366fd2a3d59d08
+5006	5271	6971297161344506	test2.exe	543d0637e58f04bf
+43	391	6971300008971466	test2_autogen/timestamp	846a3a83ea3e885e
+43	391	6971300008971466	test2_autogen/mocs_compilation.cpp	846a3a83ea3e885e
+43	391	6971300008971466	C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/timestamp	846a3a83ea3e885e
+43	391	6971300008971466	C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/mocs_compilation.cpp	846a3a83ea3e885e
+405	4990	6971300054894015	CMakeFiles/test2.dir/mainwindow.cpp.obj	77366fd2a3d59d08
+4990	5302	6971300057599508	test2.exe	543d0637e58f04bf

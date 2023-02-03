@@ -27,7 +27,170 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+void getChildren(string Xml,queue <string>& children)
+{
+    int openIndex;
+    int closeIndex;
+    string tagName;
+    int i=0,j=0;
+    int tagIndex=0;
 
+    openIndex=Xml.find_first_of('<');
+    //enhanced functionality better for big o but still not working there is an infite loop
+/*
+    while(Xml.find_first_of('<',tagIndex)<Xml.length()){
+        closeIndex=Xml.find_first_of('>',tagIndex);
+        cout<<"stuck"<<endl;
+        tagName=Xml.substr(openIndex,closeIndex-openIndex-1);
+        children.push(tagName);
+        tagIndex=Xml.find("</"+tagName+">",tagIndex);
+        openIndex=Xml.find_first_of('<',tagIndex);
+    }
+    */
+
+   //working but bad for Big O
+    while(i<=Xml.length()){
+
+       if(Xml[i]=='<'){
+            j=i;
+
+           while(Xml[j]!='>'){
+                j++;
+            }
+            tagName=Xml.substr(i+1,j-i-1);
+
+            (children).push(tagName);
+            closeIndex=Xml.find("</"+tagName+">",i);
+            i=closeIndex+tagName.length();
+
+        }
+        else{
+
+            i++;
+        }
+    }
+
+}
+
+string MainWindow:: Formatter(string XMLStr,int level){
+    string outputXml="";
+    int indexOfFirstOpen=XMLStr.find_first_of("<");
+    //Base Case
+    if(indexOfFirstOpen==-1){
+        int firstChar=XMLStr.find_first_not_of(' ');
+        outputXml.append(level,'\t');
+        if(firstChar==-1)
+        {
+            return " ";
+        }
+        else
+        {
+            return outputXml+=XMLStr.substr(firstChar)+'\n';
+        }
+
+    }
+    else{
+        queue <string> children;
+        //get The Name of the Tag
+        int indexOfFirstOpen=XMLStr.find_first_of("<");
+        int indexOfFirstClose=XMLStr.find_first_of(">");
+        string tagname = XMLStr.substr(indexOfFirstOpen+1,indexOfFirstClose-indexOfFirstOpen-1);
+        int closeTag=XMLStr.find("</"+tagname+">");
+        //create a string for the inner Children of said string
+        string tagString=XMLStr.substr(indexOfFirstClose+1,closeTag-indexOfFirstClose-1);
+        //traverse the string looking for first degree children of said string
+        getChildren(tagString,children);
+
+        outputXml.append(level,'\t');
+        outputXml+="<"+tagname+">\n";
+
+
+        if(!children.empty()){
+            int childCounter=0;
+            int looper=children.size();//we store the size in a variable because everytime we pop the size will decrease
+                for(int i=0;i<looper;i++){
+                //get the Child Tag name from the Queue then get its string including its tagname and put it in variable inner Xml
+                string childTag=children.front();
+                int childOpenTag=tagString.find("<"+childTag+">",childCounter);
+                int childCloseTag=tagString.find("</"+childTag+">",childCounter)+childTag.length()+3;//+3 for the </> so that we have the entire child
+                string innerXML=tagString.substr(childOpenTag,childCloseTag-childOpenTag);//getting the inner Substring
+                outputXml+=Formatter(innerXML,level+1);//calling the function recursively on the child
+                children.pop();
+
+            //    outputXml.append(level,'\t');
+                outputXml.append(level+1,'\t');
+                outputXml.append("</"+childTag+">\n");
+
+                childCounter=childCloseTag;
+
+            }
+        }
+        //if there are no children then call the function on the inner string and the base case will be returned
+        else{
+            outputXml+=Formatter(tagString,level+1);
+        }
+        if(level==0){
+            outputXml.append("<"+tagname+">");
+        }
+    }
+    return outputXml;
+
+}
+
+string MainWindow:: PostSearch ( string word )  {
+
+    QString text = ui->textEdit->toPlainText();
+    string text2=text.toStdString();
+
+
+         string xmlfile = text2;
+
+         string output = "" ;                 bool found = false ;
+
+       for ( int i=0 ; i < xmlfile.length() ; i++ ) {
+
+        if( xmlfile.substr( i , 6 ) == "<user>"  ) {
+
+             string posts = "" ;
+             i+=6 ;
+             int userid = 0 ;        string temp = ""  , name = ""  ;
+             int start = 0  ;
+
+             //cout << "new user \n" ;
+             while ( xmlfile.substr( i , 7 ) != "</user>" )
+             {
+
+                  if ( xmlfile.substr( i , 6 ) == "<name>" ) {
+
+                    i+=6;
+                    while ( xmlfile[i] != '<' ) {  name +=xmlfile[i] ; i++ ; }
+
+                 }
+                 else if ( xmlfile.substr( i , 7 ) == "<posts>" ) {
+                         start = i ;
+                         i+=7;
+                    while ( xmlfile.substr( i , 8 ) != "</posts>" ) { posts += xmlfile[i]; i++ ;  }
+
+                 }
+                    i++ ;
+             }
+                    for ( int k = start ; k < i ; k++ ) {
+
+                        if ( xmlfile.substr( k , word.length() ) == word ) {
+                        found = true ;
+                        output += "The word is found in the posts whose name is "
+                                     + name + "\n" + "The posts are : \n" + posts ;
+                       }
+                    }
+
+                 i+=7 ;
+
+             }
+       }
+                    if ( found ) { return output ; }
+                    else  return "The word not found \n" ;
+
+}
 void getChildrenjson(string Xml,queue <string>& children)
 {
     int openIndex;
@@ -576,7 +739,7 @@ void MainWindow::on_actionformat_triggered()
 {
     QString text = ui->textEdit->toPlainText();
     string text2=text.toStdString();
-   text2= Formating(text2);
+   text2= Formatter(text2,0);
     text=QString::fromStdString(text2);
     // Put the text in the textEdit widget
     ui->textEdit->setText(text);
@@ -599,6 +762,250 @@ void MainWindow::on_actionMinify_triggered()
     QString text = ui->textEdit->toPlainText();
     string text2=text.toStdString();
    text2= minify(text2);
+    text=QString::fromStdString(text2);
+    // Put the text in the textEdit widget
+    ui->textEdit->setText(text);
+}
+
+
+void MainWindow::on_actionpost_search_triggered()
+{
+    QString text = ui->textEdit->toPlainText();
+    string text2=text.toStdString();
+   text2= PostSearch("mido");
+    text=QString::fromStdString(text2);
+    // Put the text in the textEdit widget
+    ui->textEdit->setText(text);
+}
+class Graph {
+
+private:
+
+        int nodes;
+        list<int> *adjlist;
+public:
+     int vertArr[20][20]; //the adjacency matrix initially 0
+     int count = 0;
+    Graph() {
+        }
+
+        Graph (int nodes) { // Allocate resources
+            adjlist = new list<int> [nodes];
+            this->nodes = nodes;
+           // cout<<"nodes";
+        }
+
+      ~Graph () { // Free allocated resources
+            delete [] adjlist;
+        }
+
+        void AddEdge (int src, int dst) {
+            adjlist[src].push_back({dst});
+            adjlist[dst].push_back(src);
+           // cout<<"IN AddEdge";
+        }
+
+        void Iterate (int src) {
+            cout <<  src << " : ";
+            for (auto& adj_node : adjlist[src]) {
+                 cout << adj_node << " --> ";
+            } cout << endl;
+        }
+
+
+void printlist() {
+
+      Graph g(7);
+
+    g.AddEdge(0,1);
+    g.AddEdge(0,2);
+    g.AddEdge(1,3);
+    g.AddEdge(1,4);
+    g.AddEdge(2,3);
+    g.AddEdge(3,5);
+    g.AddEdge(4,6);
+    g.AddEdge(5,6);
+
+    cout << "Adjacency list of id : \n" << endl;
+
+    g.Iterate(0);
+    g.Iterate(1);
+    g.Iterate(4);
+    g.Iterate(2);
+    g.Iterate(3);
+    g.Iterate(5);
+    g.Iterate(6);
+}
+void displayMatrix(int v) {
+   int i, j;
+   for(i = 1 ; i <= v; i++) {
+      for(j = 1 ; j <= v; j++) {
+         cout << vertArr[i][j] << "  ";
+      }
+      cout << endl;
+   }
+}
+
+void  add_edge(int u, int v) {       //function to add edge into the matrix
+   vertArr[u][v] = 1;
+   vertArr[v][u] = 1;
+}};
+
+string MainWindow:: RepresentData(string xml ) {
+
+
+
+   ;
+       string xmlfile =xml;
+
+          int no_users = 0 ;
+          string users[100] ;
+       int vertices = 0 ;
+       string userdata  ;
+       string AdjacentList = "Adjacent List of id : \n";
+       //Graph M;
+
+          for ( int i=0 ; i < xmlfile.length() ; i++ ){
+
+            if( xmlfile.substr( i , 6 ) == "<user>" ) { vertices++ ; i+=6 ; }
+
+            }
+                      //userdata += "No of users = " + to_string( vertices ) + "\n" ;
+                          //Graph m( vertices +1 );
+                     // graph = createGraph( vertices+1 );
+                      int influencer[50] ; int inf = 0 ;
+                      int  max = 1 ;
+                      string mostactive , mostInfluencer ;
+                      map<int, string> mapp;
+          for ( int i=0 ; i < xmlfile.length() ; i++ ) {
+
+           if( xmlfile.substr( i , 6 ) == "<user>"  ) {
+
+                no_users ++ ;
+                i+=6 ;
+                int userid = 0 ;        string temp = "" , name = "" ;
+                int no_follow = 0 ;     int follow[20] ;
+
+                while ( xmlfile.substr( i , 7 ) != "</user>" )
+                {
+                   if( xmlfile.substr( i , 11 ) == "<followers>"  ){
+
+                       i+=11 ;
+                       while( xmlfile.substr( i , 12 ) != "</followers>" ) {
+
+                            if ( xmlfile.substr( i , 4 ) == "<id>" ) {
+                               no_follow ++ ;
+                               users[ no_users ] += "follower = " ;
+                                i+=4; temp = "" ;
+                                while ( xmlfile[i] != '<' ) { users[ no_users ] += xmlfile[i] ; temp+=xmlfile[i] ;  i++ ; }
+                                inf++ ; influencer[inf] = stoi ( temp ) ;
+                                    follow[no_follow] = stoi ( temp );
+                                    users[ no_users ] += "\n" ;
+                           }
+                            i++ ;
+                            }
+                            i+=12 ;
+                   }
+                    if ( xmlfile.substr( i , 4 ) == "<id>" ) {
+                      // cout << "id = " ;
+                      users[ no_users ] += "id = " ;
+                       i+=4; temp = "" ;
+                       while ( xmlfile[i] != '<' ) { users[ no_users ] += xmlfile[i] ; temp+=xmlfile[i] ; i++ ; }
+                              userid = stoi(temp) ;
+                              users[ no_users ] += "\n" ;
+                    }
+                    else if ( xmlfile.substr( i , 6 ) == "<name>" ) {
+                        users[ no_users ] += "name = " ;
+                       i+=6;
+                       while ( xmlfile[i] != '<' ) { users[ no_users ] += xmlfile[i] ; name+= xmlfile[i] ;  i++ ; }
+                             users[ no_users ] += "\n" ;
+                    }
+                    else if ( xmlfile.substr( i , 7 ) == "<topic>" ) {
+                            users[ no_users ] +=  "topic = " ;
+                       i+=7;
+                       while ( xmlfile[i] != '<' ) { users[ no_users ] += xmlfile[i] ; i++ ; }
+                             users[ no_users ] += "\n" ;
+                    }
+                    else if ( xmlfile.substr( i , 6 ) == "<body>" ) {
+                            users[ no_users ] +=  "body = " ;
+                       i+=7;
+                       while ( xmlfile[i] != '<' ) { users[ no_users ] += xmlfile[i] ; i++ ; }
+                             users[ no_users ] += "\n" ;
+                    }
+                    i++ ;
+                }
+                   AdjacentList += to_string(userid) + " : " ;
+                   if ( no_follow >= max ){ max = no_follow ;  mostactive = to_string (userid) ; }
+
+                   for ( int k=1 ; k <= no_follow ; k++ ) {
+
+                       AdjacentList += to_string( follow[k] ) + " -- > " ;
+                     //  M.add_edge( userid , follow[k] );
+                       auto it = mapp.find(follow[k]);
+                       if ( it == mapp.end() ) {
+                           mapp[follow[k]]=name;
+                       }else {
+                           mapp[follow[k]]=mapp[follow[k]] + "," + name;
+                       }
+
+                    }
+
+                    i+=7 ;
+                              AdjacentList += "\n" ;
+                }
+
+
+
+          }
+                   string Mutual = "" ;
+                   map<int, string>::iterator itt;
+
+                   for (itt = mapp.begin(); itt != mapp.end(); itt++)
+                   {
+
+                       if((itt->second).find(",") != std::string::npos)  {
+                           Mutual += itt->second + "\n";
+                           //cout<<endl;
+                           }
+                       /*std::cout << itt->first    // string (key)
+                               << ':'
+                               << itt->second   // string's value
+                               << std::endl;*/
+                   }
+
+                        int max_count = 0;
+                        int maxfreqelement;
+                            for (int i = 1 ; i <= inf ; i++) {
+                                   int count = 0;
+                                   for (int j = 1 ; j <= inf ; j++) {
+                                         if ( influencer[i] == influencer[j])
+                                          count++;
+                                  }
+                                if (count > max_count) {
+                                     max_count = count;
+                                     maxfreqelement = influencer[i];
+                                }
+                            }
+
+              //for ( int j = 1 ; j <= inf ; j++  ) { cout << influencer[j] << endl ;  }
+
+            for ( int j = 1 ; j <= vertices ; j++ ) {
+                       userdata += "\n============new user============= \n" ;
+                      userdata+= users[j]  ;
+
+             }
+
+                    return   "Mutual Friends are : "+ Mutual + "The most active user its id = " + mostactive + "\n" +
+                                "The most influencer user its id = "+ to_string( maxfreqelement ) +
+                                "\n" + AdjacentList + userdata ;
+}
+
+
+void MainWindow::on_actionRepresentdata_triggered()
+{
+    QString text = ui->textEdit->toPlainText();
+    string text2=text.toStdString();
+   text2= RepresentData(text2);
     text=QString::fromStdString(text2);
     // Put the text in the textEdit widget
     ui->textEdit->setText(text);

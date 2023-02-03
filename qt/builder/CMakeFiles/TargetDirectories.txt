@@ -1,0 +1,8 @@
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/test2.dir
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/edit_cache.dir
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/list_install_components.dir
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/install.dir
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/install/local.dir
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/test2_autogen_timestamp_deps.dir
+C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/test2_autogen.dir
