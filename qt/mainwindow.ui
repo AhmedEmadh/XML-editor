@@ -49,6 +49,7 @@
     <addaction name="actionPrint"/>
     <addaction name="actionExit"/>
     <addaction name="actionSave"/>
+    <addaction name="actionminify"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -59,6 +60,12 @@
     <addaction name="actionCut"/>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
+    <addaction name="actioncompression"/>
+    <addaction name="actionformat"/>
+    <addaction name="actionXMLtoJSON"/>
+    <addaction name="actionMinify"/>
+    <addaction name="actionpost_search"/>
+    <addaction name="actionRepresentdata"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -124,6 +131,41 @@
   <action name="actionSave">
    <property name="text">
     <string>save</string>
+   </property>
+  </action>
+  <action name="actionminify">
+   <property name="text">
+    <string>minify</string>
+   </property>
+  </action>
+  <action name="actioncompression">
+   <property name="text">
+    <string>compression</string>
+   </property>
+  </action>
+  <action name="actionformat">
+   <property name="text">
+    <string>format</string>
+   </property>
+  </action>
+  <action name="actionXMLtoJSON">
+   <property name="text">
+    <string>XMLtoJSON</string>
+   </property>
+  </action>
+  <action name="actionMinify">
+   <property name="text">
+    <string>Minify</string>
+   </property>
+  </action>
+  <action name="actionpost_search">
+   <property name="text">
+    <string>post search</string>
+   </property>
+  </action>
+  <action name="actionRepresentdata">
+   <property name="text">
+    <string>Representdata</string>
    </property>
   </action>
  </widget>

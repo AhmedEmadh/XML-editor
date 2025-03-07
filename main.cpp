@@ -258,14 +258,19 @@ class XmlReadFile{
             }   
         } 
               std::string c = content ;
-               int r = 4 ; 
+               int r = 6 ; 
                int index2 = 0 ; 
                  while ((index2 = c.find(names[1], index2)) != string::npos ) {
                     
                      c.insert( index2-1 , 2 , ' ')  ;   index2+= 2 ;  
                      index2 += names[1].length();  
+                 }index2 = 0 ; 
+                 while ((index2 = c.find(names[2], index2)) != string::npos ) {
+                    
+                     c.insert( index2-1 , 4 , ' ')  ;   index2+= 4;  
+                     index2 += names[2].length();  
                  }
-              for ( int i=2 ; i<nameslength ; i++ ) {     // Find the words between < > and Insert spaces before < 
+              for ( int i=3 ; i<nameslength ; i++ ) {     // Find the words between < > and Insert spaces before < 
                   int index2 = 0 ; 
                  while ((index2 = c.find(names[i], index2)) != string::npos ) {
                     

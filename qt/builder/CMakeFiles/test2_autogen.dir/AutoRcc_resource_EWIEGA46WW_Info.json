@@ -1,0 +1,19 @@
+{
+	"BUILD_DIR" : "C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/Omar Ayman/Documents/test2",
+	"CMAKE_SOURCE_DIR" : "C:/Users/Omar Ayman/Documents/test2",
+	"INCLUDE_DIR" : "C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/test2_autogen/include",
+	"INPUTS" : [ "C:/Users/Omar Ayman/Documents/test2/free.png" ],
+	"LOCK_FILE" : "C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/test2_autogen.dir/AutoRcc_resource_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resource" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resource.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.4.1/msvc2019_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/Omar Ayman/Documents/build-test2-Desktop_x86_windows_msvc2022_pe_64bit-Debug/CMakeFiles/test2_autogen.dir/AutoRcc_resource_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/Omar Ayman/Documents/test2/resource.qrc",
+	"VERBOSITY" : 0
+}

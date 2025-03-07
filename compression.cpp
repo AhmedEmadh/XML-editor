@@ -1,232 +1,189 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include "Compression.h"
-
-
-Hash_Map codes = Hash_Map();
-
-vector<char> chars;
-
-void printCodes(struct Huffman_node* root, string str)
+#include <iostream>
+#include <string>
+#include <queue>
+#include <unordered_map>
+#include<fstream>
+using namespace std;
+ 
+#define EMPTY_STRING ""
+ 
+// A Tree node
+struct Node
 {
-    if (!root)
-        return;
-
-    if (root->data != '&')
-        cout << root->data << ": " << str << "\n";
-
-    printCodes(root->left, str + "0");
-    printCodes(root->right, str + "1");
+    char ch;
+    int freq;
+    Node *left, *right;
+};
+ 
+// Function to allocate a new tree node
+Node* getNode(char ch, int freq, Node* left, Node* right)
+{
+    Node* node = new Node();
+ 
+    node->ch = ch;
+    node->freq = freq;
+    node->left = left;
+    node->right = right;
+ 
+    return node;
 }
-void preOrder(Huffman_node* root, string s, vector<string>& ans) {
-    if (!root) {
+ 
+// Comparison object to be used to order the heap
+struct comp
+{
+    bool operator()(const Node* l, const Node* r) const
+    {
+        // the highest priority item has the lowest frequency
+        return l->freq > r->freq;
+    }
+};
+ 
+// Utility function to check if Huffman Tree contains only a single node
+bool isLeaf(Node* root) {
+    return root->left == nullptr && root->right == nullptr;
+}
+ 
+// Traverse the Huffman Tree and store Huffman Codes in a map.
+void encode(Node* root, string str, unordered_map<char, string> &huffmanCode)
+{
+    if (root == nullptr) {
         return;
     }
+ 
+    // found a leaf node
+    if (isLeaf(root)) {
+        huffmanCode[root->ch] = (str != EMPTY_STRING) ? str : "1";
+    }
+ 
 
-    if (!root->left && !root->right) {
-        ans.push_back(s);
+    encode(root->left, str + "0", huffmanCode);
+    encode(root->right, str + "1", huffmanCode);
+}
+ 
+// Traverse the Huffman Tree and decode the encoded string
+string decoded ;
+void decode(Node* root, int &index, string str)
+{
+    if (root == nullptr) {
+        return ;
+    }
+     
+    // found a leaf node
+    if (isLeaf(root))
+    {
+          decoded +=  root->ch;
+          return ;
+          
+    }
+ 
+    index++;
+ 
+    if (str[index] == '0') {
+        decode(root->left, index, str);
+    }
+    else {
+        decode(root->right, index, str);
+    }
+}
+ 
+// Builds Huffman Tree and decodes the given input text
+string buildHuffmanTree( string text )
+{
+    
+    // base case: empty string
+    if (text == EMPTY_STRING) {
+        return "empty string \n";
+    }
+ 
+    // count the frequency of appearance of each character and store it in a map
+    unordered_map<char, int> freq;
+    for (char ch: text) {
+        freq[ch]++;
+    }
+ 
+    // Create a priority queue to store live nodes of the Huffman tree
+    priority_queue<Node*, vector<Node*>, comp> pq;
+ 
+    // Create a leaf node for each character and add it to the priority queue.
+    for (auto pair: freq) {
+        pq.push(getNode(pair.first, pair.second, nullptr, nullptr));
+    }
+ 
+    // do till there is more than one node in the queue
+    while (pq.size() != 1)
+    {
+        // Remove the two nodes of the highest priority
+        // (the lowest frequency) from the queue
+ 
+        Node* left = pq.top(); pq.pop();
+        Node* right = pq.top();    pq.pop();
+ 
+        // create a new internal node with these two nodes as children and
+        // with a frequency equal to the sum of the two nodes' frequencies.
+        // Add the new node to the priority queue.
+ 
+        int sum = left->freq + right->freq;
+        pq.push(getNode('\0', sum, left, right));
+    }
+ 
+    // `root` stores pointer to the root of Huffman Tree
+    Node* root = pq.top();
+ 
+    // Traverse the Huffman Tree and store Huffman Codes
+    // in a map. Also, print them
+    unordered_map<char, string> huffmanCode;
+    encode(root, EMPTY_STRING, huffmanCode);
+ 
+   
+    string HuffmanCodes ;
+    for (auto pair: huffmanCode) {
+       
+       HuffmanCodes += pair.first ;
+       HuffmanCodes += " " ;
+       HuffmanCodes +=  pair.second;
+       HuffmanCodes +=  "\n";
     }
 
-    preOrder(root->left, s + "0", ans);
-    preOrder(root->right, s + "1", ans);
-}
-
-// utility function to store map each character with its
-// frequency in input string
-
-vector<int> calcFreq(string str)
-{
-    int size = str.length();
-    vector<int> freqs(256,0);
-    for (int i = 0; i < str.size(); i++)
-        freqs[str[i]]++;
-    return freqs;
-
-}
-//takes root and an empty string and char array each character is indexed in array and places at each index the array the code of each char
-void Coding(struct Huffman_node* root,string s,string chars[]) {
-
-    if (root->data != '&') {
-        chars[root->data] = s;
+    // Print encoded string
+    string str;
+    for (char ch: text) {
+        str += huffmanCode[ch];
+    }
+     
+    if (isLeaf(root))
+    {
+        // Special case: For input like a, aa, aaa, etc.
+        while (root->freq--) {
+            decoded += root->ch;
+        }
 
     }
     else {
-        Coding(root->left, s + '0', chars);
-        Coding(root->right, s + '1', chars);
-    }
-}
-Huffman_node* encoding(string s,vector<int> freq,int size)
-{
-    struct Huffman_node* left, * right, * top;
-    // Create a min heap & inserts all characters of data[]
-    priority_queue<Huffman_node*, vector<Huffman_node*>, compare>* minHeap = new priority_queue<Huffman_node*, vector<Huffman_node*>, compare>;
-    string characters;
-    for (int i = 0; i < size; ++i) {
-        characters = s.substr(0, i);
-        if(characters.find(s[i]) == -1)
-        minHeap->push(new Huffman_node(s[i], freq[s[i]]));
-    }
-    // Iterate while size of heap doesn't become 1
-    while (minHeap->size() != 1) {
-
-        // Extract the two minimum
-        // freq items from min heap
-        left = minHeap->top();
-        minHeap->pop();
-
-        right = minHeap->top();
-        minHeap->pop();
-
-        // Create a new internal node with
-        // frequency equal to the sum of the
-        // two nodes frequencies. Make the
-        // two extracted node as left and right children
-        // of this new node. Add this node
-        // to the min heap '&' is a special value
-        // for internal nodes, not used
-        top = new Huffman_node('&', left->freq + right->freq);
-
-        top->left = left;
-        top->right = right;
-
-        minHeap->push(top);
-    }
-    Huffman_node* root = minHeap->top();
-    return root;
-    //from 114 to 124 takes root of tree fills an array with codes of each char
-}
-string encode(struct Huffman_node* root , string s , int size)
-{
-string arr[256];
-for (int i = 0; i < 256; i++)
-    cout << arr[i];
-Coding(root, "", arr);
-string temp = "";
-for (int i = 0; i < size; i++)
-{
-    temp.append(arr[s[i]]);
-}
-/*cout << root->freq<<endl;*///testing
-return temp;
-}
-
-// function iterates through the encoded string s
-// if s[i]=='1' then move to node->right
-// if s[i]=='0' then move to node->left
-// if leaf node append the node->data to our output string
-string decode_file(struct Huffman_node* root, string s)
-{
-    string ans = "";
-    struct Huffman_node* curr = root;
-    for (int i = 0; i < s.size(); i++)
-    {
-        if (s[i] == '0')
-            curr = curr->left;
-        else
-            curr = curr->right;
-
-        // reached leaf node
-        if (curr->left == NULL && curr->right == NULL)
-        {
-            ans += curr->data;
-            curr = root;
+        // Traverse the Huffman Tree again and this time,
+        // decode the encoded string
+        int index = -1;
+        while (index < (int)str.size() - 1) {
+           decode(root, index, str);
         }
     }
-    // cout<<ans<<endl;
-    return ans + '\0';
+     
+     /*string final = "Huffman Codes are:\n" + HuffmanCodes + "\nThe original string is:\n" 
+                       + text + "\nThe encoded string is:\n" + str  + "\nThe decoded string is:\n" + 
+                       decodexml ;*/
+            string s="Huffman Codes are:\n";
+        string output =s.append(HuffmanCodes ).append("\nThe original string is:\n").append(text).append( 
+        "\nThe encoded string is:\n").append(str).append("\nThe decoded string is:\n").append(decoded) ;
+        //+ "\nThe encoded string is:\n" + str + "\nThe decoded string is:\n" + decodexml ;
+        return output ;
 }
-bool checkbyeight(string str)
+
+// Huffman coding algorithm implementation in C++
+int main()
 {
-    int n = str.length();
-
-    // Empty string
-    if (n == 0)
-        return false;
-
-    // If there is single digit
-    if (n == 1)
-        return ((str[0] - '0') % 8 == 0);
-
-    // If there is double digit
-    if (n == 2)
-        return (((str[n - 2] - '0') * 10 + (str[n - 1] - '0')) % 8 == 0);
-
-    // If number formed by last three digits is
-    // divisible by 8.
-    int last = str[n - 1] - '0';
-    int second_last = str[n - 2] - '0';
-    int third_last = str[n - 3] - '0';
-
-    return ((third_last * 100 + second_last * 10 + last) % 8 == 0);
-}
-
-
-
-
-
-void WriteBit(string bits,string* package,FILE* f)
-{
-
-    int current_bit = 0;
-    char bit_buffer=0;
-    for (int i = 0; i < bits.length(); i++) {
-        if (bits[i] == '1')
-            bit_buffer |= (1 << current_bit);
-        else
-            bit_buffer |= (0 << current_bit);
-        if (current_bit == 7) {
-            package->push_back(bit_buffer);
-            fwrite(&bit_buffer, 1, 1, f);
-            current_bit = 0;
-            bit_buffer = 0;
-        }
-        current_bit++;
-    }
-
-}
-string ReadFile(ifstream* f) {
-
-    char read;
-    string buffer="";
-    while (f->get(read)) {
-        buffer.push_back(read);
-    }
-    return buffer;
-
-}
-vector<unsigned char> bitstring_to_bytes(string s)
-{
-    long long size = s.length();
-    vector<unsigned char> arrayOfByte(size / 8);
-    long long index = 0;
-    //cout<<"size:  "<<size<<"\n";
-    int rem = size % 8;
-    //cout<<"rem:  "<<rem<<"\n";
-    for (long long i = 0; i < size - rem; i = i + 8)
-    {
-        //string one_byte = s.substr(i,i+8);
-        string one_byte = "";
-        for (int bit = i; bit < i + 8; bit++)
-        {
-            if (s[bit] == '\0')
-            {
-                break;
-            }
-            one_byte = one_byte + s[bit];
-        }
-        //cout<<one_byte<<"\n";
-        unsigned int integer = stoi(one_byte, 0, 2);
-        unsigned char c = static_cast<unsigned char>(integer);
-        arrayOfByte[index] = c;
-        //cout<<arrayOfByte[index];
-        index++;
-    }
-    return arrayOfByte;
-}
-//params:
-//b: 1 byte integer
-//Returns a string of 8 bits
-string one_byte_to_bitstring(unsigned char byte)
-{
-    string binary = bitset<8>(byte).to_string();
-    return binary;
+    ifstream input_file("XML2.xml");
+    string text = string((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
+string o = buildHuffmanTree(text);
+cout << o;
+    
+    return 0;
 }
